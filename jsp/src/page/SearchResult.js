@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
 import { askGPT } from "../api/gpt";
+import { addFavorite, removeFavorite, getAllFavorites } from "../utils/favorites";
 import "./SearchResult.css";
 
 export default function SearchResult() {
@@ -11,9 +12,39 @@ export default function SearchResult() {
 
     const [loading, setLoading] = useState(true);
     const [answer, setAnswer] = useState("");
-
-    const hasCalled = useRef(false);
     const [input, setInput] = useState("");
+    const hasCalled = useRef(false);
+    const [favorites, setFavorites] = useState({});
+
+    const memberId = localStorage.getItem("member_id") || "1";
+
+    const handleToggleFavorite = async (num, title, icon, content) => {
+        try {
+            const key = `${query}-${num}`;
+            const isFavorited = favorites[key];
+
+            if (isFavorited) {
+                // 즐겨찾기 삭제
+                await removeFavorite(memberId, query, num);
+            } else {
+                // 즐겨찾기 추가
+                await addFavorite(memberId, query, {
+                    sectionNumber: num,
+                    sectionTitle: title,
+                    sectionIcon: icon,
+                    content: content
+                });
+            }
+
+            // UI 업데이트
+            setFavorites(prev => ({
+                ...prev,
+                [key]: !prev[key]
+            }));
+        } catch (error) {
+            console.error("즐겨찾기 저장 실패:", error);
+        }
+    };
 
     const handleSearch = () => {
         if (!input.trim()) {
@@ -67,19 +98,31 @@ export default function SearchResult() {
             const formatted = formatGPTText(res);
             setAnswer(formatted);
             setLoading(false);
+
+            // 즐겨찾기 상태 DB에서 조회
+            try {
+                const favList = await getAllFavorites(memberId);
+                const favMap = {};
+                
+                favList.forEach(medicine => {
+                    if (medicine.name === query && medicine.sections) {
+                        medicine.sections.forEach(section => {
+                            favMap[`${query}-${section.sectionNumber}`] = true;
+                        });
+                    }
+                });
+                
+                setFavorites(favMap);
+            } catch (error) {
+                console.error("즐겨찾기 조회 실패:", error);
+            }
         };
 
         fetchResult();
     }, [query]);
 
-    // 🔥 모드 자동 분리
-    const mode =
-        answer.startsWith("[A]") ? "A" :
-            answer.startsWith("[B]") ? "B" :
-                answer.startsWith("[C]") ? "C" : "A";
-
-    // 🔥 첫 줄([A][B][C]) 제거
-    const cleanAnswer = answer.replace(/^\[[A-C]\]\s*/, "");
+    // 🔥 항상 A 모드로 처리
+    const cleanAnswer = answer;
 
     // 🔥 A 모드 → 1~8 구조 분리
     const sections =
@@ -102,46 +145,41 @@ export default function SearchResult() {
             ) : (
                 <>
                     {/* 🔵 A 모드 — 상세 말풍선 카드 */}
-                    {mode === "A" && (
-                        <div className="A-ModeWrapper">
-                            <div className="ResultBox">
-                                {sections.map((sec, index) => {
-                                    const titleMatch = sec.match(/^(\d\)\s*.*?)(?:\n|$)/);
-                                    const title = titleMatch ? titleMatch[1] : "";
-                                    const content = sec.replace(title, "").trim();
-                                    const num = title.charAt(0);
-                                    const icon = iconMap[num] || "💊";
+                    <div className="A-ModeWrapper">
+                        <div className="ResultBox">
+                            {sections.map((sec, index) => {
+                                const titleMatch = sec.match(/^(\d\)\s*.*?)(?:\n|$)/);
+                                const title = titleMatch ? titleMatch[1] : "";
+                                const content = sec.replace(title, "").trim();
+                                const num = title.charAt(0);
+                                const icon = iconMap[num] || "💊";
+                                const key = `${query}-${num}`;
+                                const isFav = favorites[key];
 
-                                    return (
-                                        <div className="section-card" key={index}>
-                                            <div className="icon-bubble">{icon}</div>
+                                return (
+                                    <div className="section-card" key={index}>
+                                        <div className="icon-bubble">{icon}</div>
 
-                                            <div className="bubble-box">
+                                        <div className="bubble-box">
+                                            <div className="bubble-header">
                                                 <p className="bubble-title">{title}</p>
-                                                <div className="bubble-content">
-                                                    <ReactMarkdown>{content}</ReactMarkdown>
-                                                </div>
+                                                <button 
+                                                    className={`FavoriteButton ${isFav ? 'active' : ''}`}
+                                                    onClick={() => handleToggleFavorite(num, title, icon, content)}
+                                                    title="즐겨찾기"
+                                                >
+                                                    {isFav ? '♥' : '♡'}
+                                                </button>
+                                            </div>
+                                            <div className="bubble-content">
+                                                <ReactMarkdown>{content}</ReactMarkdown>
                                             </div>
                                         </div>
-                                    );
-                                })}
-                            </div>
+                                    </div>
+                                );
+                            })}
                         </div>
-                    )}
-
-                    {/* 🟩 B 모드 — 간단 약 추천 */}
-                    {mode === "B" && (
-                        <div className="SimpleBox">
-                            <ReactMarkdown>{cleanAnswer}</ReactMarkdown>
-                        </div>
-                    )}
-
-                    {/* 🟨 C 모드 — 약 간단 요약 */}
-                    {mode === "C" && (
-                        <div className="SimpleBox">
-                            <ReactMarkdown>{cleanAnswer}</ReactMarkdown>
-                        </div>
-                    )}
+                    </div>
                 </>
             )}
 

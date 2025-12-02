@@ -31,12 +31,14 @@ const FavoritesPage = () => {
       // UI용으로 변환: id, category, sections 포함
       const formattedList = favList.map((item, index) => ({
         id: index,
-        name: item.name,
-        category: item.sections.length > 0 ? item.sections[0].title : '정보 없음',
+        name: item.medicineName,
+        category: item.sections.length > 0 ? item.sections[0].sectionTitle : '정보 없음',
         sections: item.sections
       }));
       
+      console.log('변환된 목록:', formattedList);
       setFavorites(formattedList);
+      console.log('상태 설정 완료, favorites.length:', formattedList.length);
     } catch (error) {
       console.error('즐겨찾기 조회 실패:', error);
       setFavorites([]);
@@ -58,7 +60,7 @@ const FavoritesPage = () => {
       const favoriteItem = favorites.find(f => f.name === medicineName);
       if (favoriteItem && favoriteItem.sections) {
         for (const section of favoriteItem.sections) {
-          await removeFavorite(memberId, medicineName, section.number);
+          await removeFavorite(memberId, medicineName, section.sectionNumber);
         }
       }
 
@@ -89,11 +91,7 @@ const FavoritesPage = () => {
             <div style={{ padding: '20px', textAlign: 'center', color: '#999' }}>
               로딩 중...
             </div>
-          ) : favorites.length === 0 ? (
-            <div style={{ padding: '20px', textAlign: 'center', color: '#999' }}>
-              즐겨찾은 의약품이 없습니다.
-            </div>
-          ) : (
+          ) : favorites && favorites.length > 0 ? (
             favorites.map((item) => (
               <div key={item.id} className="menu-item">
                 <div>
@@ -118,6 +116,10 @@ const FavoritesPage = () => {
                 </button>
               </div>
             ))
+          ) : (
+            <div style={{ padding: '20px', textAlign: 'center', color: '#999' }}>
+              즐겨찾은 의약품이 없습니다.
+            </div>
           )}
         </div>
       </div>

@@ -79,9 +79,13 @@ export const getAllFavorites = async (memberId) => {
       }
     });
     
-    console.log('즐겨찾기 목록:', response.data);
+    console.log('즐겨찾기 원본 응답:', response);
+    console.log('즐겨찾기 response.data:', response.data);
+    console.log('즐겨찾기 response.data?.data:', response.data?.data);
     
-    const favorites = response.data?.data || [];
+    const favorites = response.data?.data || response.data || [];
+    
+    console.log('추출된 favorites:', favorites);
     
     // 의약품별로 그룹화
     const groupedByMedicine = {};
@@ -105,6 +109,7 @@ export const getAllFavorites = async (memberId) => {
     const result = Object.values(groupedByMedicine);
     result.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
     
+    console.log('반환하는 결과:', result);
     return result;
   } catch (error) {
     console.error('즐겨찾기 목록 가져오기 실패:', error);
