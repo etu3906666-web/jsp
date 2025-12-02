@@ -1,0 +1,102 @@
+.family-wrapper {
+  width: 100%;
+  min-height: 100vh;
+  background: #ffffff;
+  font-family: Pretendard, sans-serif;
+  display: flex;
+  flex-direction: column;
+}
+
+.family-header {
+  display: flex;
+  align-items: center;
+  padding: 18px 20px;
+  border-bottom: 1px solid #eee;
+}
+
+.back-btn {
+  background: none;
+  border: none;
+  font-size: 22px;
+  margin-right: 10px;
+  cursor: pointer;
+}
+
+.header-title {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.family-description {
+  padding: 24px 20px;
+  font-size: 15px;
+  color: #444;
+}
+
+/* 검색 박스 */
+.search-box {
+  display: flex;
+  padding: 0 20px;
+  gap: 10px;
+}
+
+.search-input {
+  flex: 1;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  font-size: 15px;
+}
+
+.search-btn {
+  padding: 12px 20px;
+  font-size: 15px;
+  background: #222;
+  color: #fff;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+}
+
+/* 검색 결과 카드 */
+.result-card {
+  width: 88%;
+  margin: 30px auto;
+  background: #fafafa;
+  border-radius: 14px;
+  padding: 18px;
+  border: 1px solid #e5e5e5;
+}
+
+.result-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  font-size: 15px;
+  border-bottom: 1px solid #eaeaea;
+}
+
+.result-row:last-child {
+  border-bottom: none;
+}
+
+.result-label {
+  font-weight: 600;
+  color: #555;
+}
+
+.result-value {
+  color: #222;
+}
+
+.add-family-btn {
+  margin-top: 20px;
+  width: 100%;
+  padding: 14px;
+  background: #222;
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  cursor: pointer;
+}

@@ -1,0 +1,233 @@
+/* ============================= */
+/* 🔥 전체 레이아웃 */
+/* ============================= */
+
+.ResultContainer {
+  width: 100%;
+  min-height: 100vh;
+  padding: 20px;
+  padding-bottom: 140px; /* 검색창 공간 확보 */
+  box-sizing: border-box;
+  font-family: "Pretendard", Arial, sans-serif;
+  position: relative;
+}
+
+
+
+/* ============================= */
+/* 🔥 로딩 화면 */
+/* ============================= */
+/* 로딩 박스를 화면 정중앙에 배치 */
+.LoadingBox {
+  position: fixed;          /* 화면 기준 고정 */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);  /* 정확한 중앙 정렬 */
+  
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  text-align: center;
+  z-index: 9999;            /* 가장 위로 */
+}
+
+/* 로딩 이미지 */
+.LoadingImage {
+  width: 160%;
+  opacity: 0.9;
+  margin-bottom: 18px;
+}
+
+/* 로딩 텍스트 */
+.LoadingText {
+  font-size: 16px;
+  color: #555;
+}
+
+
+
+
+/* ============================= */
+/* 🔥 A 모드 — 말풍선 카드 */
+/* ============================= */
+
+/* A 모드 전체 출력 영역 */
+.A-ModeWrapper {
+  width: 100%;
+  max-width: 450px;     /* 말풍선 너비 */
+  margin: 120px auto 0; /* 패턴 아래쪽에 여백 확보 */
+  padding: 0 10px;
+  box-sizing: border-box;
+
+  /* 화면에서 안전 영역 확보 */
+  height: calc(95vh - 200px); 
+  overflow-y: auto;
+
+  /* 스크롤 스타일 */
+  scrollbar-width: thin;
+}
+
+/* A 모드에서 말풍선 구조 기본 유지 */
+.ResultBox {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.section-card {
+  display: flex;
+  align-items: flex-start;
+  /* gap: 12px; */
+  bottom: 5%;
+  /* margin-top: 45%; */
+  width: 100%;
+}
+
+.icon-bubble {
+  font-size: 26px;
+  background: white;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bubble-box {
+  flex: 1;
+  background: white;
+  padding: 13px 18px;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.14);
+}
+
+.bubble-title {
+  font-size: 16px;
+  font-weight: 800;
+  margin-bottom: 10px;
+}
+
+.bubble-content {
+  font-size: 14px;
+  line-height: 1.55;
+  color: #333;
+}
+
+
+/* 리스트 */
+.bubble-content ul {
+  margin-left: 18px;
+  margin-top: 4px;
+}
+
+.bubble-content li {
+  margin: 4px 0;
+}
+
+
+
+/* ============================= */
+/* 🔥 B / C 모드 — 단일 박스 중앙 정렬 */
+/* ============================= */
+
+.SimpleBox {
+  width: 92%;
+  max-width: 420px;
+  margin: 0 auto;
+  background: white;
+  padding: 22px 20px;
+  border-radius: 18px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+  margin-top: 90px;
+
+  /* 화면 중앙 배치 */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: left;
+  font-size: 15px;
+  line-height: 1.55;
+}
+
+
+
+/* ============================= */
+/* 🔥 검색창 — 항상 하단 20% */
+/* ============================= */
+
+.ResultSearchWrapper {
+  position: fixed;
+  bottom: 10%;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  pointer-events: none; /* wrapper는 클릭 안되게 */
+}
+
+.Result-SearchBox {
+  width: 90%;
+  max-width: 380px;
+  height: 48px;
+  background-color: #efefef;
+  border-radius: 25px;
+  display: flex;
+  align-items: center;
+  padding: 0 15px;
+  gap: 10px;
+
+  pointer-events: auto; /* 내부 요소는 클릭 가능 */
+}
+
+.SearchInput {
+  flex: 1;
+  border: none;
+  background: transparent;
+  outline: none;
+  font-size: 15px;
+}
+
+.VoiceButton {
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+.VoiceButton img {
+  width: 20px;
+  opacity: 0.8;
+}
+
+
+
+/* ============================= */
+/* 📱 반응형 */
+/* ============================= */
+
+@media (max-width: 480px) {
+  .icon-bubble {
+    width: 42px;
+    height: 42px;
+    font-size: 22px;
+  }
+
+  .bubble-box {
+    padding: 12px 15px;
+  }
+
+  .bubble-title {
+    font-size: 15px;
+  }
+
+  .bubble-content {
+    font-size: 14px;
+  }
+
+  .SimpleBox {
+    padding: 18px 15px;
+  }
+}

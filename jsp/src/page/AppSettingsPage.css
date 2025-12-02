@@ -1,0 +1,85 @@
+.app-settings-wrapper {
+  width: 100%;
+  min-height: 100vh;
+  background: #ffffff;
+  font-family: Pretendard, sans-serif;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 헤더 */
+.app-settings-header {
+  display: flex;
+  align-items: center;
+  padding: 18px 20px;
+  border-bottom: 1px solid #eee;
+}
+
+.back-btn {
+  background: none;
+  border: none;
+  font-size: 22px;
+  margin-right: 10px;
+  cursor: pointer;
+}
+
+.header-title {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+/* 유저 정보 카드 */
+.user-info-card {
+  width: 88%;
+  margin: 20px auto;
+  background: #fafafa;
+  border-radius: 14px;
+  padding: 18px;
+  border: 1px solid #e5e5e5;
+}
+
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  font-size: 15px;
+  border-bottom: 1px solid #eaeaea;
+}
+
+.info-row:last-child {
+  border-bottom: none;
+}
+
+.info-label {
+  font-weight: 600;
+  color: #555;
+}
+
+.info-value {
+  color: #222;
+}
+
+/* 가족 연동 버튼 */
+.family-link-btn-wrapper {
+  margin-top: auto;
+  padding: 30px 0 50px 0;
+  display: flex;
+  justify-content: center;
+}
+
+.family-link-btn {
+  width: 85%;
+  padding: 15px;
+  font-size: 17px;
+  font-weight: 600;
+  background: #222;
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.family-link-btn:hover {
+  background: #333;
+}

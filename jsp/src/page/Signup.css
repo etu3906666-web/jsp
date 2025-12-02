@@ -1,0 +1,130 @@
+/* 전체 컨테이너 */
+.SignupContainer {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f5f5f5;
+  overflow: hidden;
+  padding: 20px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* 상단 패턴 */
+.Signup-Primary-Pattern {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 50%;
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* 하단 패턴 */
+.Signup-Primary-PatternBottonimage {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* 회원가입 콘텐츠 박스 */
+.signup-content {
+  width: 85%;
+  max-width: 330px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  z-index: 5;
+}
+
+/* 제목 */
+.Signup-title {
+  font-size: 32px;
+  font-weight: 900;
+  color: #111;
+  margin-bottom: 8px;
+}
+
+/* 라벨 */
+.Signup-label {
+  font-size: 15px;
+  font-weight: bold;
+  color: #222;
+}
+
+/* input 기본 */
+.Signup-input {
+  border: none;
+  border-bottom: 1px solid #aaa;
+  padding: 10px 0;
+  font-size: 16px;
+  background: transparent;
+  outline: none;
+}
+
+/* 아이디 + 중복확인 버튼 */
+.username-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.check-btn {
+  background-color: #444;
+  color: white;
+  padding: 10px 14px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  white-space: nowrap;
+  font-weight: bold;
+}
+
+/* 전화번호 + 인증 버튼 */
+.phone-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.phone-input {
+  flex: 1;
+}
+
+.verify-btn {
+  width: 80px;
+  background-color: black;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  padding: 10px 0;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+/* 인증 완료 메시지 */
+.verified-text {
+  color: #0A8A0A;
+  font-weight: bold;
+}
+
+/* 회원가입 버튼 */
+.Signup-button {
+  width: 100%;
+  background-color: black;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 14px 0;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 10px;
+}

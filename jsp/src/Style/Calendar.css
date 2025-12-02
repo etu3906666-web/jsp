@@ -1,0 +1,183 @@
+
+.CalContainer {
+  position: relative;
+  padding: 20px;
+  max-width: 380px;
+  margin-top: 15%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  padding-top: 120px;
+  font-family: Pretendard, sans-serif;
+}
+
+.CalPattern {
+  width: 100%;
+  pointer-events: none;
+  margin-bottom: 10px;
+}
+
+.CalProfileBtn {
+  position: absolute;
+  top: 25px;
+  right: 25px;
+  background: none;
+  border: none;
+}
+
+.CalProfileBtn img {
+  width: 26px;
+  height: 26px;
+}
+
+.AddFriendButton {
+  position: absolute;
+  top: -20px;
+  right: 15px;
+  border: none;
+  background: white;
+  cursor: pointer;
+
+  transition: transform 0.1s ease, opacity 0.1s ease;
+}
+
+.AddFriendButton:active {
+  transform: scale(0.92);
+  opacity: 0.8;
+}
+
+.CalHeader {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+
+  margin-bottom: 10px;
+}
+
+.CalBtn {
+  background: none;
+  border: none;
+  font-size: 22px;
+  font-weight: 700;
+  cursor: pointer;
+
+  padding: 4px 8px;
+  border-radius: 6px;
+  transition: background 0.2s ease;
+  margin-bottom: -15px;
+}
+
+.CalBtn:hover {
+  background: #eeeeee;
+}
+
+/* 제목 */
+.CalTitle {
+  text-align: center;
+  font-size: 22px;
+  font-weight: 800;
+  margin-bottom: 6px;
+}
+
+.CalSubText {
+  text-align: center;
+  font-size: 10px;
+  color: #777;
+  margin-bottom: 18px;
+}
+
+.CalWeekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  justify-items: center;
+  align-items: center;
+
+  width: 100%;
+  font-size: 12px;
+  color: #555;
+  margin-top: 20px;
+  margin-bottom: 18px;
+}
+
+.CalGrid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+
+  width: 100%;
+  row-gap: 14px;
+  column-gap: 14px;
+
+  justify-items: center;
+  align-items: center;
+}
+
+.CalDay {
+  width: 40px;
+  height: 40px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background: black;
+  color: white;
+  border-radius: 50%;
+  font-weight: 600;
+}
+
+.CalDay.empty {
+  background: transparent !important;
+}
+
+.CalDay.today {
+  background: #d3d3d3 !important;
+  color: black !important;
+}
+
+.CalDay.selected {
+  background: #4caf50 !important;
+  color: white;
+  font-weight: 700;
+}
+
+.RecordBox {
+  margin-top: 25px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.RecordItem {
+  width: 100%;
+  background: #f6f6f6;
+  border-radius: 40px;
+  border: none;
+  padding: 12px 18px;
+
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.RecordItem img {
+  width: 21px;
+}
+
+.RecordItem.checked {
+  background-color: #d8f5da;
+  border: 1px solid #4caf50;
+}
+
+.CheckMark {
+  margin-left: auto;
+  font-size: 18px;
+  font-weight: 700;
+  color: #4caf50;
+}

@@ -1,0 +1,163 @@
+/* 메인 */
+.main-wrapper {
+  padding: 20px;
+  font-family: Pretendard, sans-serif;
+}
+
+.month-title {
+  text-align: center;
+  font-size: 26px;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+/* 달력 영역 */
+.calendar-wrapper {
+  background: white;
+  border-radius: 12px;
+  padding: 10px;
+}
+
+.calendar-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.arrow-btn {
+  background: none;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.calendar-header-title {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.weekday-row {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  text-align: center;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+/* 날짜 원형 */
+.date-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+}
+
+.date-circle {
+  width: 38px;
+  height: 38px;
+  background: #1c1c1c;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.date-circle:hover {
+  background: #555;
+}
+
+/* 이벤트 버튼 */
+.event-buttons {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.event-btn {
+  width: 100%;
+  padding: 14px 20px;
+  font-size: 18px;
+  border-radius: 40px;
+  background: white;
+  border: 2px solid black;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+}
+
+/* 팝업 모달 */
+.popup-backdrop {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.popup-card {
+  background: white;
+  width: 90%;
+  max-width: 400px;
+  border-radius: 15px;
+  padding: 20px;
+  animation: popup 0.25s ease;
+}
+
+@keyframes popup {
+  from { transform: scale(0.9); opacity: 0; }
+  to   { transform: scale(1); opacity: 1; }
+}
+
+.popup-top {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.popup-close {
+  background: none;
+  border: none;
+  font-size: 22px;
+  cursor: pointer;
+}
+
+.popup-buttons {
+  display: flex;
+  gap: 10px;
+  margin: 10px 0 20px 0;
+}
+
+.popup-add-btn {
+  flex: 1;
+  padding: 8px;
+  background: #efefef;
+  border-radius: 8px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.add2 {
+  background: #e0e0e0;
+}
+
+.popup-selected {
+  text-align: center;
+  margin-top: 10px;
+  font-weight: 600;
+}
+
+.date-empty {
+  width: 38px;
+  height: 38px;
+}
+
+.today {
+  background: #777 !important;
+}
