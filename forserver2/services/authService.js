@@ -77,3 +77,41 @@ export const loginUser = async ({ userID, password }) => {
     conn.release();
   }
 };
+
+export const changePassword = async ({ userID, currentPassword, newPassword }) => {
+  const conn = await pool.getConnection();
+  try {
+    // 1. 사용자 조회
+    const rows = await conn.query(
+      "SELECT member_id, password FROM UserLogin WHERE userID = ?",
+      [userID]
+    );
+
+    if (rows.length === 0) {
+      return { success: false, message: "존재하지 않는 아이디입니다." };
+    }
+
+    const user = rows[0];
+
+    // 2. 현재 비밀번호 검증
+    const match = bcrypt.compareSync(currentPassword, user.password);
+    if (!match) {
+      return { success: false, message: "현재 비밀번호가 올바르지 않습니다." };
+    }
+
+    // 3. 새 비밀번호 해시화
+    const salt = bcrypt.genSaltSync(10);
+    const newHashed = bcrypt.hashSync(newPassword, salt);
+
+    // 4. 데이터베이스 업데이트
+    await conn.query(
+      "UPDATE UserLogin SET password = ?, salt = ? WHERE userID = ?",
+      [newHashed, salt, userID]
+    );
+
+    return { success: true, message: "비밀번호가 변경되었습니다." };
+
+  } finally {
+    conn.release();
+  }
+};

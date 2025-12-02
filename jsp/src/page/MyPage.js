@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { signOut } from 'firebase/auth';
-import { auth } from '../firebase';
 import './MyPage.css';
 
 const MyPage = () => {
@@ -54,7 +52,12 @@ const MyPage = () => {
     const confirmed = window.confirm('정말 로그아웃하시겠습니까?');
     if (confirmed) {
       try {
-        await signOut(auth);
+        // localStorage에서 토큰 및 사용자 정보 제거
+        localStorage.removeItem('token');
+        localStorage.removeItem('member_id');
+        localStorage.removeItem('userID');
+        
+        alert('로그아웃되었습니다.');
         navigate('/login');
       } catch (error) {
         console.error('로그아웃 실패:', error);

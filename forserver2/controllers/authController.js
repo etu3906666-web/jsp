@@ -3,7 +3,8 @@ import { success, fail } from "../utils/response.js";
 import {
   registerUser,
   loginUser,
-  checkUsernameExists
+  checkUsernameExists,
+  changePassword
 } from "../services/authService.js";
 import { signToken } from "../utils/jwt.js";
 
@@ -38,4 +39,11 @@ export const handleCheckUsername = async (req, res) => {
 
   const exists = await checkUsernameExists(userID);
   return success(res, "조회 완료", { exists });
+};
+
+export const handleChangePassword = async (req, res) => {
+  const result = await changePassword(req.body);
+
+  if (!result.success) return fail(res, result.message, 401);
+  return success(res, result.message);
 };

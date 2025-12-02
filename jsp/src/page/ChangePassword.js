@@ -1,9 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import bcrypt from 'bcryptjs';
-import { db } from '../firebase';
-import { doc, updateDoc } from 'firebase/firestore';
-import { getCurrentUser } from '../utils/auth';
+import axiosInstance from '../utils/axios';
 import './Login.css';
 import './MyPage.css';
 import './ChangePassword.css';
@@ -40,53 +37,35 @@ const ChangePassword = () => {
     }
 
     try {
-      const user = getCurrentUser();
-
-      if (!user) {
-        setPasswordMessage('비밀번호가 틀립니다');
+      const userID = localStorage.getItem('userID');
+      
+      if (!userID) {
+        setPasswordMessage('사용자 정보를 찾을 수 없습니다.');
         setMessageType('error');
         return;
       }
 
-      // 현재 비밀번호 검증 (Firestore에 저장된 해시와 비교)
-      const match = bcrypt.compareSync(passwordInput.current, user.password);
-      if (!match) {
-        setPasswordMessage('현재 비밀번호가 올바르지 않습니다.');
-        setMessageType('error');
-        return;
-      }
+      const res = await axiosInstance.post('/api/auth/change-password', {
+        userID: userID,
+        currentPassword: passwordInput.current,
+        newPassword: passwordInput.new
+      });
 
-      // 새 비밀번호 해시화하여 Firestore 업데이트
-      const newHashed = bcrypt.hashSync(passwordInput.new, 10);
-      try {
-        await updateDoc(doc(db, 'users', user.phone), {
-          password: newHashed,
-        });
-
-        // localStorage에 저장된 사용자 정보도 갱신
-        const updatedUser = { ...user, password: newHashed };
-        localStorage.setItem('user', JSON.stringify(updatedUser));
-
+      if (res.data.status === 'success') {
         setPasswordMessage('비밀번호가 변경되었습니다.');
         setMessageType('success');
 
         setTimeout(() => {
           navigate(-1);
         }, 2000);
-      } catch (err) {
-        console.error('Firestore 비밀번호 업데이트 실패:', err);
-        setPasswordMessage('비밀번호 변경에 실패했습니다.');
+      } else {
+        setPasswordMessage(res.data.message || '비밀번호 변경에 실패했습니다.');
         setMessageType('error');
       }
     } catch (error) {
       console.error('비밀번호 변경 실패:', error);
-      if (error.code === 'auth/wrong-password') {
-        setPasswordMessage('현재 비밀번호가 올바르지 않습니다.');
-      } else if (error.code === 'auth/weak-password') {
-        setPasswordMessage('새 비밀번호가 너무 약합니다.');
-      } else {
-        setPasswordMessage('비밀번호 변경에 실패했습니다.');
-      }
+      const errorMessage = error.response?.data?.message || '비밀번호 변경에 실패했습니다.';
+      setPasswordMessage(errorMessage);
       setMessageType('error');
     }
   };
