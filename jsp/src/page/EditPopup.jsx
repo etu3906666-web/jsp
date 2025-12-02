@@ -15,17 +15,28 @@ export default function EditPopup({ item = {}, date, onClose }) {
 
   const save = async () => {
     try {
-      const method = form.schedule_id ? "put" : "post";
+      // 입력값 검증
+      if (!form.m_name.trim()) {
+        alert("약품 이름을 입력해주세요.");
+        return;
+      }
 
-      await axiosInstance({
+      const method = form.schedule_id ? "put" : "post";
+      console.log("약품 저장 요청:", { method, data: form });
+
+      const res = await axiosInstance({
         url: "/api/schedule",
         method,
         data: form,
       });
 
+      console.log("약품 저장 성공:", res.data);
+      alert("약품이 저장되었습니다.");
       onClose();
     } catch (err) {
       console.error("약 정보 저장 실패:", err);
+      console.error("에러 상세:", err.response?.data);
+      alert("약품 저장에 실패했습니다: " + (err.response?.data?.message || err.message));
     }
   };
 
