@@ -11,6 +11,8 @@ import SettingsPage from "./page/SettingsPage";
 import AppSettingsPage from "./page/AppSettingsPage";
 import FamilyConnect from "./page/FamilyConnect";
 import FamilyManage from "./page/FamilyManage";
+import MyPage from "./page/MyPage";
+import ChangePassword from "./page/ChangePassword";
 
 import ProtectedRoute from "./components/ProtectedRoute";
 import Main from "./page/Main";
@@ -32,6 +34,8 @@ function App() {
 
         <Route path="/settings" element={<SettingsPage />} />
         <Route path="/app-settings" element={<AppSettingsPage />} />
+        <Route path="/mypage" element={<MyPage />} />
+        <Route path="/change-password" element={<ChangePassword />} />
 
         {/* 로그인 보호 페이지 */}
         <Route

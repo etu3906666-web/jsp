@@ -87,6 +87,10 @@ export default function Main() {
             <img src="/image/calendar.png" alt="Calendar" />
             <span className="CalendarText">일정 관리</span>
           </button>
+          <button className="mypageBtn" onClick={() => navigate("/mypage")}>
+            <img src="/image/mypage.png" alt="MyPage" />
+            <span className="MypageText">마이페이지</span>
+          </button>
         </div>
 
         {/* 숨겨진 input -> 카메라 실행 */}

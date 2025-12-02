@@ -87,7 +87,8 @@
 
 /* 기본 버튼 스타일 통일 */
 .CameraBtn,
-.calendarBtn {
+.calendarBtn,
+.mypageBtn {
   display: flex;
   align-items: center;
   gap: 6px;
@@ -103,7 +104,8 @@
 
 /* 아이콘 */
 .CameraBtn img,
-.calendarBtn img {
+.calendarBtn img,
+.mypageBtn img {
   width: 40px;
   height: 40px;
 }

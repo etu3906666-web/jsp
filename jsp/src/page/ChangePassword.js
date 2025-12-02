@@ -1,0 +1,168 @@
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import bcrypt from 'bcryptjs';
+import { db } from '../firebase';
+import { doc, updateDoc } from 'firebase/firestore';
+import { getCurrentUser } from '../utils/auth';
+import './Login.css';
+import './MyPage.css';
+import './ChangePassword.css';
+
+const ChangePassword = () => {
+  const navigate = useNavigate();
+  const [passwordInput, setPasswordInput] = useState({
+    current: '',
+    new: '',
+    confirm: ''
+  });
+  const [passwordMessage, setPasswordMessage] = useState('');
+  const [messageType, setMessageType] = useState(''); // 'success' or 'error'
+
+  const handleBack = () => {
+    navigate(-1);
+  };
+
+  const handlePasswordChange = async () => {
+    if (!passwordInput.current || !passwordInput.new || !passwordInput.confirm) {
+      setPasswordMessage('모든 필드를 입력해주세요.');
+      setMessageType('error');
+      return;
+    }
+    if (passwordInput.new !== passwordInput.confirm) {
+      setPasswordMessage('새 비밀번호가 일치하지 않습니다.');
+      setMessageType('error');
+      return;
+    }
+    if (passwordInput.new.length < 6) {
+      setPasswordMessage('새 비밀번호는 6자 이상이어야 합니다.');
+      setMessageType('error');
+      return;
+    }
+
+    try {
+      const user = getCurrentUser();
+
+      if (!user) {
+        setPasswordMessage('비밀번호가 틀립니다');
+        setMessageType('error');
+        return;
+      }
+
+      // 현재 비밀번호 검증 (Firestore에 저장된 해시와 비교)
+      const match = bcrypt.compareSync(passwordInput.current, user.password);
+      if (!match) {
+        setPasswordMessage('현재 비밀번호가 올바르지 않습니다.');
+        setMessageType('error');
+        return;
+      }
+
+      // 새 비밀번호 해시화하여 Firestore 업데이트
+      const newHashed = bcrypt.hashSync(passwordInput.new, 10);
+      try {
+        await updateDoc(doc(db, 'users', user.phone), {
+          password: newHashed,
+        });
+
+        // localStorage에 저장된 사용자 정보도 갱신
+        const updatedUser = { ...user, password: newHashed };
+        localStorage.setItem('user', JSON.stringify(updatedUser));
+
+        setPasswordMessage('비밀번호가 변경되었습니다.');
+        setMessageType('success');
+
+        setTimeout(() => {
+          navigate(-1);
+        }, 2000);
+      } catch (err) {
+        console.error('Firestore 비밀번호 업데이트 실패:', err);
+        setPasswordMessage('비밀번호 변경에 실패했습니다.');
+        setMessageType('error');
+      }
+    } catch (error) {
+      console.error('비밀번호 변경 실패:', error);
+      if (error.code === 'auth/wrong-password') {
+        setPasswordMessage('현재 비밀번호가 올바르지 않습니다.');
+      } else if (error.code === 'auth/weak-password') {
+        setPasswordMessage('새 비밀번호가 너무 약합니다.');
+      } else {
+        setPasswordMessage('비밀번호 변경에 실패했습니다.');
+      }
+      setMessageType('error');
+    }
+  };
+
+  return (
+    <div>
+      <img src="/image/Primary_Pattern.png" className="Login-Primary-PatternBottonimage" />
+      <div className="LoginContainer">
+        <div className="MyPage-container">
+          <div className="mypage-header">
+            <button className="back-button" onClick={handleBack}>
+              &lt;
+            </button>
+            <h1 className="mypage-title">비밀번호 변경</h1>
+          </div>
+          <div className="change-password-container">
+            <div className="change-password-field">
+              <label className="change-password-label">
+                현재 비밀번호
+              </label>
+              <input
+                type="password"
+                value={passwordInput.current}
+                onChange={(e) => setPasswordInput({ ...passwordInput, current: e.target.value })}
+                placeholder="현재 비밀번호"
+                className="change-password-input"
+              />
+            </div>
+            <div className="change-password-field">
+              <label className="change-password-label">
+                새 비밀번호
+              </label>
+              <input
+                type="password"
+                value={passwordInput.new}
+                onChange={(e) => setPasswordInput({ ...passwordInput, new: e.target.value })}
+                placeholder="새 비밀번호"
+                className="change-password-input"
+              />
+            </div>
+            <div className="change-password-field">
+              <label className="change-password-label">
+                비밀번호 확인
+              </label>
+              <input
+                type="password"
+                value={passwordInput.confirm}
+                onChange={(e) => setPasswordInput({ ...passwordInput, confirm: e.target.value })}
+                placeholder="비밀번호 확인"
+                className="change-password-input"
+              />
+            </div>
+            {passwordMessage && (
+              <div className={`change-password-message ${messageType}`}>
+                {passwordMessage}
+              </div>
+            )}
+            <div className="change-password-button-group">
+              <button
+                onClick={handleBack}
+                className="change-password-button cancel"
+              >
+                취소
+              </button>
+              <button
+                onClick={handlePasswordChange}
+                className="change-password-button submit"
+              >
+                변경
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default ChangePassword;
